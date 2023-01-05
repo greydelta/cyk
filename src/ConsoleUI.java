@@ -25,6 +25,68 @@ public class ConsoleUI {
     }
 
     public void launch() {
+        mainMenu();
+    }
+
+    public void mainMenu() {
+        int mainMenuChoice = -1, status = -1;
+        do {
+            System.out.println("CYK Algorithm");
+            System.out.println("================");
+            System.out.println("1. Load From File");
+            System.out.println("2. Input Manually");
+            System.out.println("3. Exit");
+            do {
+                System.out.print("Choice: ");
+                try {
+                    mainMenuChoice = intInputValidation(1, 4);
+                    System.out.print("\n");
+                    status = 1;
+                } catch (IllegalArgumentException e) {
+                    System.err.println(e.getMessage());
+                    bufferFor5Miliseconds();
+                    status = 0;
+                }
+            } while (status != 1);
+
+            switch (mainMenuChoice) {
+                case 1:
+                    loadFromFile();
+                    break;
+                case 2:
+                    inputManually();
+                    break;
+                case 3:
+                    System.out.println("\nThank you & have a nice day!");
+                    System.exit(0);
+                    break;
+            }
+        } while (status != 1);
+    }
+
+    public void loadFromFile() {
+        List<Grammar> grammar = control.getAllGrammars();
+
+        System.out.println("\n================");
+        System.out.println("<<Received Grammar>>");
+        for (Grammar tempGrammar : grammar) {
+            String msg = "";
+            msg += tempGrammar.getStartVariable() + " -> ";
+
+            List<String> list = tempGrammar.getVariable();
+            int count = 0;
+            for (String ls : list) {
+                count++;
+                msg += ls;
+                if (list.size() > 1 && count != list.size())
+                    msg += " | ";
+            }
+            System.out.println("Grammar: " + msg);
+        }
+    }
+
+    public void inputManually() {
+        // handle @ frontend
     }
 
 
