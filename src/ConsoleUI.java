@@ -65,6 +65,7 @@ public class ConsoleUI {
     }
 
     public void loadFromFile() {
+        promptFileToLoad();
         List<Grammar> grammar = control.getAllGrammars();
 
         System.out.println("\n================");
@@ -83,6 +84,91 @@ public class ConsoleUI {
             }
             System.out.println("Grammar: " + msg);
         }
+    }
+
+    public void promptFileToLoad() {
+        try {
+            System.out.println("Select the corresponding number to select file");
+            int count = 0, status = -1, fileChoice = -1;
+            File[] filesList = getAllTextFilesInDirectory();
+            for (File file : filesList) {
+                String filePath = file.getCanonicalPath();
+                String fileName = extractFileName(filePath);
+                System.out.println(++count + ": " + fileName);
+            }
+
+            // ! TODO: if no files
+
+            do {
+                System.out.print("Choice: ");
+                try {
+                    fileChoice = intInputValidation(1, filesList.length);
+                    System.out.print("\n");
+                    status = 1;
+                } catch (IllegalArgumentException e) {
+                    System.err.println(e.getMessage());
+                    bufferFor5Miliseconds();
+                    status = 0;
+                }
+            } while (status != 1);
+
+            File fileToLoad = filesList[fileChoice - 1];
+            loadDataFromFile(extractFileName(fileToLoad.getCanonicalPath()));
+        } catch (Exception e) {
+            System.out.print("IOException");
+        }
+    }
+
+    public File[] getAllTextFilesInDirectory() throws IOException {
+        File f = new File(System.getProperty("user.dir")); // get directory
+        FilenameFilter textFilter = new FilenameFilter() {
+            public boolean accept(File dir, String name) {
+                return name.toLowerCase().endsWith(".txt");
+            }
+        };
+        File[] files = f.listFiles(textFilter);
+        return files;
+    }
+
+    public String extractFileName(String pathname) {
+        String[] split = pathname.split("\\\\");
+        return split[split.length - 1];
+    }
+
+    public void loadDataFromFile(String fileName) {
+        System.out.println("=== (START) Loading data from " + fileName + "===");
+        File fileData = new File(fileName);
+        try {
+            setScanner(new Scanner(fileData));
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found!");
+        }
+
+        while (scan.hasNextLine()) {
+            String dataFromFile = scan.nextLine();
+            Grammar grammarToAdd = new Grammar();
+
+            // ^ Starting Variable
+            String[] firstSplit = dataFromFile.split("->");
+            grammarToAdd.setStartVariable(firstSplit[0].trim());
+            // @ debug
+            System.out.println("startVariable: " + grammarToAdd.getStartVariable() + "\tlength: "
+                    + grammarToAdd.getStartVariable().length());
+
+            // ^ Variables
+            String[] secondSplit = firstSplit[1].split("\\|");
+            List<String> variables = new ArrayList<>();
+            for (int i = 0; i < secondSplit.length; i++) {
+                variables.add(secondSplit[i].trim()); // trim to remove whitespace
+            }
+            grammarToAdd.setVariable(variables);
+            for (String variable : grammarToAdd.getVariable()) {
+                // @ debug
+                System.out.println("variable: " + variable + "\t\tlength: " + variable.length());
+            }
+            control.addGrammar(grammarToAdd);
+        }
+        System.out.println("=== (END) Loaded data from " + fileName + "===");
     }
 
     public void inputManually() {
