@@ -15,4 +15,8 @@ public class DataLists implements IDataStore {
     public void addGrammar(Grammar grammar) {
         grammarList.add(grammar);
     }
+
+    public void clearAll() {
+        grammarList.clear();
+    }
 }

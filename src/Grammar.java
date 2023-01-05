@@ -5,7 +5,7 @@ public class Grammar {
     private String startVariable;
 
     public Grammar() {
-        this.variable.clear();
+        this.variable = null;
         this.startVariable = "";
     }
 

@@ -15,4 +15,8 @@ public class Controller {
     public void addGrammar(Grammar grammar) {
         dataLists.addGrammar(grammar);
     }
+
+    public void clearAll() {
+        dataLists.clearAll();
+    }
 }
