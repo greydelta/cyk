@@ -5,7 +5,6 @@ public class App {
         ConsoleUI userInterface = new ConsoleUI();
         userInterface.setController(controller);
         System.out.println("version 1");
-        userInterface.loadAllData();
         userInterface.launch();
     }
 }
