@@ -3,11 +3,11 @@ import java.util.List;
 public interface IDataStore {
     public List<Grammar> getAllGrammars();
 
-    public List<String> getAllCnfInputs();
+    public List<CnfInput> getAllCnfInputs();
 
     public void addGrammar(Grammar grammar);
 
-    public void addCnfInput(String cnfInput);
+    public void addCnfInput(CnfInput cnfInput);
 
     public void clearGrammarList();
 

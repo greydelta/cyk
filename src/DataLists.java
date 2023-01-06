@@ -3,7 +3,7 @@ import java.util.*;
 public class DataLists implements IDataStore {
 
     private List<Grammar> grammarList;
-    private List<String> cnfInputList;
+    private List<CnfInput> cnfInputList;
 
     public DataLists() {
         grammarList = new ArrayList<>();
@@ -14,7 +14,7 @@ public class DataLists implements IDataStore {
         return this.grammarList;
     }
 
-    public List<String> getAllCnfInputs() {
+    public List<CnfInput> getAllCnfInputs() {
         return this.cnfInputList;
     }
 
@@ -22,7 +22,7 @@ public class DataLists implements IDataStore {
         this.grammarList.add(grammar);
     }
 
-    public void addCnfInput(String cnfInput) {
+    public void addCnfInput(CnfInput cnfInput) {
         this.cnfInputList.add(cnfInput);
     }
 

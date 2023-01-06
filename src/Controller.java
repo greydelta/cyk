@@ -12,7 +12,7 @@ public class Controller {
         return this.dataLists.getAllGrammars();
     }
 
-    public List<String> getAllCnfInputs() {
+    public List<CnfInput> getAllCnfInputs() {
         return this.dataLists.getAllCnfInputs();
     }
 
@@ -20,7 +20,7 @@ public class Controller {
         this.dataLists.addGrammar(grammar);
     }
 
-    public void addCnfInput(String cnfInput) {
+    public void addCnfInput(CnfInput cnfInput) {
         this.dataLists.addCnfInput(cnfInput);
     }
 
