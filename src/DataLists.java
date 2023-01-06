@@ -4,7 +4,7 @@ public class DataLists implements IDataStore {
 
     private List<Grammar> grammarList;
     private List<CnfInput> cnfInputList;
-    private List<String[]> cykResultList;
+    private List<CykResults> cykResultList;
 
     public DataLists() {
         grammarList = new ArrayList<>();
@@ -20,8 +20,23 @@ public class DataLists implements IDataStore {
         return this.cnfInputList;
     }
 
-    public List<String[]> getAllCykResultList() {
+    public List<CykResults> getAllCykResultList() {
         return this.cykResultList;
+    }
+
+    public CykResults getCykResultsByStep(int step) {
+        CykResults tempCykResults = new CykResults();
+        int count = 0;
+        for (CykResults cyk : this.cykResultList) {
+            count++;
+            int stepInt = (int) cyk.getStep();
+            if (Integer.compare(stepInt, step) == 0) {
+                tempCykResults.setStep(stepInt);
+                tempCykResults.setCykResultsList(cyk.getCykResultsList());
+                return cyk;
+            }
+        }
+        return new CykResults();
     }
 
     public void addGrammar(Grammar grammar) {
@@ -32,7 +47,7 @@ public class DataLists implements IDataStore {
         this.cnfInputList.add(cnfInput);
     }
 
-    public void addCykResult(String[] cykResult) {
+    public void addCykResult(CykResults cykResult) {
         this.cykResultList.add(cykResult);
     }
 

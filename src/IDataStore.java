@@ -5,13 +5,15 @@ public interface IDataStore {
 
     public List<CnfInput> getAllCnfInputs();
 
-    public List<String[]> getAllCykResultList();
+    public List<CykResults> getAllCykResultList();
+
+    public CykResults getCykResultsByStep(int step);
 
     public void addGrammar(Grammar grammar);
 
     public void addCnfInput(CnfInput cnfInput);
 
-    public void addCykResult(String[] cykResult);
+    public void addCykResult(CykResults cykResult);
 
     public void clearGrammarList();
 

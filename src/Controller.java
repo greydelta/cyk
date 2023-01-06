@@ -16,8 +16,12 @@ public class Controller {
         return this.dataLists.getAllCnfInputs();
     }
 
-    public List<String[]> getAllCykResultList() {
+    public List<CykResults> getAllCykResultList() {
         return this.dataLists.getAllCykResultList();
+    }
+
+    public CykResults getCykResultsByStep(int step) {
+        return this.dataLists.getCykResultsByStep(step);
     }
 
     public void addGrammar(Grammar grammar) {
@@ -28,8 +32,9 @@ public class Controller {
         this.dataLists.addCnfInput(cnfInput);
     }
 
-    public void addCykResult(String[] cykResult) {
-        this.dataLists.addCykResult(cykResult);
+    public void addCykResult(int step, List<String> result) {
+        CykResults cykResultToAdd = new CykResults(step, result);
+        this.dataLists.addCykResult(cykResultToAdd);
     }
 
     public void clearGrammarList() {
