@@ -52,6 +52,7 @@ public class ConsoleUI {
             switch (mainMenuChoice) {
                 case 1:
                     loadFromFile();
+                    promptCNFInput();
                     break;
                 case 2:
                     inputManually();
@@ -169,6 +170,62 @@ public class ConsoleUI {
             control.addGrammar(grammarToAdd);
         }
         System.out.println("=== (END) Loaded data from " + fileName + "===");
+    }
+
+    public void promptCNFInput() {
+        List<String> cnfInputList = control.getAllCnfInputs();
+        String cnfInput = null;
+        int doWhile = -1, innerDoWhile = -1, choice = -1;
+        System.out.println("\n================");
+        System.out.println("<<CNF Input>>");
+        do {
+            try {
+                System.out.print("Input CNF: ");
+                cnfInput = stringInputValidation();
+                if (!checkIfCnfInputExists(cnfInput)) {
+                    control.addCnfInput(cnfInput);
+                } else {
+                    System.out.println("\nCNF Input entered already exists!");
+                }
+                do { // innerDoWhile
+                    System.out.println("\n<<CNF Input Summary>>");
+                    System.out.println("<<CNF Input in current run: " + cnfInputList.size() + ">>");
+                    System.out.println("1. Add more CNF Input");
+                    System.out.println("2. Proceed to generate");
+                    System.out.print(">>Choice: ");
+                    try {
+                        choice = intInputValidation(1, 2);
+                        innerDoWhile = 1;
+                    } catch (IllegalArgumentException e) {
+                        System.err.println(e.getMessage());
+                        bufferFor5Miliseconds();
+                        innerDoWhile = 0;
+                    }
+
+                    if (choice == 1)
+                        doWhile = 0;
+                    else if (choice == 2)
+                        doWhile = 1;
+                } while (innerDoWhile != 1);
+            } catch (IllegalArgumentException e) {
+                System.err.println(e.getMessage());
+                bufferFor5Miliseconds();
+            }
+        } while (doWhile != 1);
+    }
+
+    public boolean checkIfCnfInputExists(String cnfInputEntered) {
+        List<String> cnfInputList = control.getAllCnfInputs();
+        boolean flag = false;
+        for (String cnfInput : cnfInputList) {
+            // @ debug
+            // System.out.println(
+            // "Compare " + cnfInput.toString() + " & " + cnfInputEntered + " = "
+            // + (new String(cnfInput).equals(cnfInputEntered)));
+            if (new String(cnfInput).equals(cnfInputEntered))
+                flag = true;
+        }
+        return flag;
     }
 
     public void inputManually() {
