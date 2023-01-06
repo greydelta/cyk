@@ -15,11 +15,11 @@ public class Grammar {
     }
 
     public List<String> getVariable() {
-        return variable;
+        return this.variable;
     }
 
     public String getStartVariable() {
-        return startVariable;
+        return this.startVariable;
     }
 
     public void setVariable(List<String> variable) {

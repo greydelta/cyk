@@ -9,30 +9,30 @@ public class Controller {
     }
 
     public List<Grammar> getAllGrammars() {
-        return dataLists.getAllGrammars();
+        return this.dataLists.getAllGrammars();
     }
 
     public List<String> getAllCnfInputs() {
-        return dataLists.getAllCnfInputs();
+        return this.dataLists.getAllCnfInputs();
     }
 
     public void addGrammar(Grammar grammar) {
-        dataLists.addGrammar(grammar);
+        this.dataLists.addGrammar(grammar);
     }
 
     public void addCnfInput(String cnfInput) {
-        dataLists.addCnfInput(cnfInput);
+        this.dataLists.addCnfInput(cnfInput);
     }
 
     public void clearGrammarList() {
-        dataLists.clearGrammarList();
+        this.dataLists.clearGrammarList();
     }
 
     public void clearCnfInputList() {
-        dataLists.clearCnfInputList();
+        this.dataLists.clearCnfInputList();
     }
 
     public void clearAll() {
-        dataLists.clearAll();
+        this.dataLists.clearAll();
     }
 }
