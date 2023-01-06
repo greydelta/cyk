@@ -5,6 +5,8 @@ public interface IDataStore {
 
     public List<CnfInput> getAllCnfInputs();
 
+    public List<String[]> getAllCykResultList();
+
     public void addGrammar(Grammar grammar);
 
     public void addCnfInput(CnfInput cnfInput);
@@ -12,6 +14,8 @@ public interface IDataStore {
     public void clearGrammarList();
 
     public void clearCnfInputList();
+
+    public void clearCykResultList();
 
     public void clearAll();
 }

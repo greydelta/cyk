@@ -16,6 +16,10 @@ public class Controller {
         return this.dataLists.getAllCnfInputs();
     }
 
+    public List<String[]> getAllCykResultList() {
+        return this.dataLists.getAllCykResultList();
+    }
+
     public void addGrammar(Grammar grammar) {
         this.dataLists.addGrammar(grammar);
     }
@@ -30,6 +34,10 @@ public class Controller {
 
     public void clearCnfInputList() {
         this.dataLists.clearCnfInputList();
+    }
+
+    public void clearCykResultList() {
+        this.dataLists.clearCykResultList();
     }
 
     public void clearAll() {

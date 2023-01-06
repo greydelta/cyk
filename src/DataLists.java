@@ -4,10 +4,12 @@ public class DataLists implements IDataStore {
 
     private List<Grammar> grammarList;
     private List<CnfInput> cnfInputList;
+    private List<String[]> cykResultList;
 
     public DataLists() {
         grammarList = new ArrayList<>();
         cnfInputList = new ArrayList<>();
+        cykResultList = new ArrayList<>();
     }
 
     public List<Grammar> getAllGrammars() {
@@ -16,6 +18,10 @@ public class DataLists implements IDataStore {
 
     public List<CnfInput> getAllCnfInputs() {
         return this.cnfInputList;
+    }
+
+    public List<String[]> getAllCykResultList() {
+        return this.cykResultList;
     }
 
     public void addGrammar(Grammar grammar) {
@@ -34,8 +40,13 @@ public class DataLists implements IDataStore {
         this.cnfInputList.clear();
     }
 
+    public void clearCykResultList() {
+        this.cykResultList.clear();
+    }
+
     public void clearAll() {
         this.grammarList.clear();
         this.cnfInputList.clear();
+        this.cykResultList.clear();
     }
 }
