@@ -11,6 +11,8 @@ public interface IDataStore {
 
     public void addCnfInput(CnfInput cnfInput);
 
+    public void addCykResult(String[] cykResult);
+
     public void clearGrammarList();
 
     public void clearCnfInputList();

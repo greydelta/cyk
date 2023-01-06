@@ -28,6 +28,10 @@ public class Controller {
         this.dataLists.addCnfInput(cnfInput);
     }
 
+    public void addCykResult(String[] cykResult) {
+        this.dataLists.addCykResult(cykResult);
+    }
+
     public void clearGrammarList() {
         this.dataLists.clearGrammarList();
     }

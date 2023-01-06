@@ -32,6 +32,10 @@ public class DataLists implements IDataStore {
         this.cnfInputList.add(cnfInput);
     }
 
+    public void addCykResult(String[] cykResult) {
+        this.cykResultList.add(cykResult);
+    }
+
     public void clearGrammarList() {
         this.grammarList.clear();
     }
