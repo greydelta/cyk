@@ -37,9 +37,9 @@ public class ConsoleUI {
             System.out.println("2. Input Manually");
             System.out.println("3. Exit");
             do {
-                System.out.print("Choice: ");
+                System.out.print(">>Choice: ");
                 try {
-                    mainMenuChoice = intInputValidation(1, 4);
+                    mainMenuChoice = intInputValidation(1, 3);
                     System.out.print("\n");
                     status = 1;
                 } catch (IllegalArgumentException e) {
@@ -83,6 +83,9 @@ public class ConsoleUI {
                 if (list.size() > 1 && count != list.size())
                     msg += " | ";
             }
+
+            if (tempGrammar.getCanGenerateVariable())
+                msg += " (can generate)";
             System.out.println("Grammar: " + msg);
         }
     }
@@ -92,16 +95,18 @@ public class ConsoleUI {
             System.out.println("Select the corresponding number to select file");
             int count = 0, status = -1, fileChoice = -1;
             File[] filesList = getAllTextFilesInDirectory();
+            System.out.println("No. \tFile Name");
+            System.out.println("------------------------");
             for (File file : filesList) {
                 String filePath = file.getCanonicalPath();
                 String fileName = extractFileName(filePath);
-                System.out.println(++count + ": " + fileName);
+                System.out.println(++count + ". \t" + fileName);
             }
 
             // ! TODO: if no files
 
             do {
-                System.out.print("Choice: ");
+                System.out.print(">>Choice: ");
                 try {
                     fileChoice = intInputValidation(1, filesList.length);
                     System.out.print("\n");
@@ -116,7 +121,7 @@ public class ConsoleUI {
             File fileToLoad = filesList[fileChoice - 1];
             loadDataFromFile(extractFileName(fileToLoad.getCanonicalPath()));
         } catch (Exception e) {
-            System.out.print("IOException");
+            System.out.print("Error: " + e);
         }
     }
 
@@ -163,17 +168,30 @@ public class ConsoleUI {
                 variables.add(secondSplit[i].trim()); // trim to remove whitespace
             }
             grammarToAdd.setVariable(variables);
+
+            // ^ canGenerateVariable
+            boolean canGenerateVariableFlag = false;
             for (String variable : grammarToAdd.getVariable()) {
                 // @ debug
-                System.out.println("variable: " + variable + "\t\tlength: " + variable.length());
+                if (variable.length() <= 1) {
+                    System.out
+                            .println("variable: " + variable + "\t\tlength: " + variable.length() + " variable ASCII: "
+                                    + (int) variable.charAt(0));
+                    canGenerateVariableFlag = true;
+                } else
+                    System.out.println("variable: " + variable + "\t\tlength: " + variable.length());
+                // if (variable)
             }
+            grammarToAdd.setCanGenerateVariable(canGenerateVariableFlag);
+
+            // ^ Add to DataLists
             control.addGrammar(grammarToAdd);
         }
         System.out.println("=== (END) Loaded data from " + fileName + "===");
     }
 
     public void promptCNFInput() {
-        List<String> cnfInputList = control.getAllCnfInputs();
+        List<CnfInput> cnfInputList = control.getAllCnfInputs();
         String cnfInput = null;
         int doWhile = -1, innerDoWhile = -1, choice = -1;
         System.out.println("\n================");
@@ -183,7 +201,9 @@ public class ConsoleUI {
                 System.out.print("Input CNF: ");
                 cnfInput = stringInputValidation();
                 if (!checkIfCnfInputExists(cnfInput)) {
-                    control.addCnfInput(cnfInput);
+                    // boolean flag = checkIfCnfInputIsValid(cnfInput);
+
+                    control.addCnfInput(cnfInput, splitCnfInput(cnfInput));
                 } else {
                     System.out.println("\nCNF Input entered already exists!");
                 }
@@ -215,17 +235,26 @@ public class ConsoleUI {
     }
 
     public boolean checkIfCnfInputExists(String cnfInputEntered) {
-        List<String> cnfInputList = control.getAllCnfInputs();
+        List<CnfInput> cnfInputList = control.getAllCnfInputs();
         boolean flag = false;
-        for (String cnfInput : cnfInputList) {
+        for (CnfInput cnfInput : cnfInputList) {
             // @ debug
             // System.out.println(
             // "Compare " + cnfInput.toString() + " & " + cnfInputEntered + " = "
             // + (new String(cnfInput).equals(cnfInputEntered)));
-            if (new String(cnfInput).equals(cnfInputEntered))
+            if (new String(cnfInput.getCnfInputInString()).equals(cnfInputEntered))
                 flag = true;
         }
         return flag;
+    }
+
+    public List<String> splitCnfInput(String cnfInput) {
+        List<String> listString = new ArrayList<>();
+        String[] split = cnfInput.split("");
+        for (int i = 0; i < split.length; i++) {
+            listString.add(split[i]);
+        }
+        return listString;
     }
 
     public void inputManually() {

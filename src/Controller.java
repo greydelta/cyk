@@ -28,8 +28,9 @@ public class Controller {
         this.dataLists.addGrammar(grammar);
     }
 
-    public void addCnfInput(CnfInput cnfInput) {
-        this.dataLists.addCnfInput(cnfInput);
+    public void addCnfInput(String cnfInputString, List<String> cnfInputStringList) {
+        CnfInput cnfInputToAdd = new CnfInput(cnfInputString, cnfInputStringList);
+        this.dataLists.addCnfInput(cnfInputToAdd);
     }
 
     public void addCykResult(int step, List<String> result) {
