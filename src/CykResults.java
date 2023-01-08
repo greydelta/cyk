@@ -24,11 +24,13 @@ public class CykResults {
 
     public String getCykResultsInFullForm() {
         String msg = "";
+        int count = 0;
         for (String cyk : this.cykResultsList) {
-            System.out.println(">>> " + cyk.toString());
-            msg += cyk.toString() + " | ";
+            count++;
+            msg += cyk.toString();
+            if (count != this.getCykResultsList().size())
+                msg += " | ";
         }
-        System.out.println(">>>>>>>>> " + msg);
         return msg;
     }
 
@@ -43,5 +45,4 @@ public class CykResults {
     public void add(String result) {
         this.cykResultsList.add(result);
     }
-
 }

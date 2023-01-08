@@ -7,8 +7,6 @@ public interface IDataStore {
 
     public List<CykResults> getAllCykResultList();
 
-    public CykResults getCykResultsByStep(int step);
-
     public void addGrammar(Grammar grammar);
 
     public void addCnfInput(CnfInput cnfInput);

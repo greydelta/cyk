@@ -20,10 +20,6 @@ public class Controller {
         return this.dataLists.getAllCykResultList();
     }
 
-    public CykResults getCykResultsByStep(int step) {
-        return this.dataLists.getCykResultsByStep(step);
-    }
-
     public void addGrammar(Grammar grammar) {
         this.dataLists.addGrammar(grammar);
     }

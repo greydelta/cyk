@@ -24,21 +24,6 @@ public class DataLists implements IDataStore {
         return this.cykResultList;
     }
 
-    public CykResults getCykResultsByStep(int step) {
-        CykResults tempCykResults = new CykResults();
-        int count = 0;
-        for (CykResults cyk : this.cykResultList) {
-            count++;
-            int stepInt = (int) cyk.getStep();
-            if (Integer.compare(stepInt, step) == 0) {
-                tempCykResults.setStep(stepInt);
-                tempCykResults.setCykResultsList(cyk.getCykResultsList());
-                return cyk;
-            }
-        }
-        return new CykResults();
-    }
-
     public void addGrammar(Grammar grammar) {
         this.grammarList.add(grammar);
     }
