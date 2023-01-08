@@ -53,9 +53,12 @@ public class ConsoleUI {
                 case 1:
                     loadFromFile();
                     promptCNFInput();
+                    generateCYK();
                     break;
                 case 2:
                     inputManually();
+                    // promptCNFInput();
+                    // generateCYK();
                     break;
                 case 3:
                     System.out.println("\nThank you & have a nice day!");
@@ -261,6 +264,74 @@ public class ConsoleUI {
         // handle @ frontend
     }
 
+    public void generateCYK() {
+        System.err.println("\n<<Generate CYK>>");
+        List<CnfInput> cnfInputList = control.getAllCnfInputs();
+
+        for (CnfInput cnfInput : cnfInputList) { // ! TODO: refactor - separate CNF List
+            System.out.println("## Generating for CNF Input: " + cnfInput.getCnfInputInString());
+            System.out.println("Received num of inputs: " + cnfInput.getCnfInputInList().size());
+        }
+
+        initiateIteration();
+    }
+
+    public void initiateIteration() {
+        System.out.println("\ninitiateIteration()");
+        List<Grammar> grammarList = control.getAllGrammars();
+        List<CnfInput> cnfInputList = control.getAllCnfInputs();
+
+        // ^ set cnf input to generate / test against grammar - only 1 for now but can
+        // ^ refactor to accomodate selection
+        CnfInput selectedCnfInput = new CnfInput();
+        for (CnfInput cnfInput : cnfInputList) {
+            selectedCnfInput.setCnfInputInList(cnfInput.getCnfInputInList());
+            selectedCnfInput.setCnfInputInString(cnfInput.getCnfInputInString());
+        }
+
+        int step = 0;
+        List<String> result = new ArrayList<>();
+
+        for (int i = 0; i < selectedCnfInput.getCnfInputInList().size(); i++) {
+            ++step;
+            int substep = 0;
+            for (String cnf : selectedCnfInput.getCnfInputInList()) {
+                System.out.println("step " + step + " substep " + ++substep);
+                for (Grammar grammar : grammarList) {
+                    for (String gra : grammar.getVariable()) {
+                        // ^ Step 1
+                        if (step == 1) {
+                            System.out.print(
+                                    "Compare: " + cnf + " against grammar: " + grammar.getStartVariable() + " var: "
+                                            + gra
+                                            + " Action > ");
+                            if (cnf.equals(gra)) {
+                                System.out.print(
+                                        "Add " + grammar.getStartVariable() + " to Substep " + substep + " array");
+                                result.add(grammar.getStartVariable());
+                            }
+                        } else if (step == 2) {
+                            if (substep == 1) {
+                                control.addCykResult(step - 1, result); // $ add results from step 1
+
+                                List<CykResults> tempcyk = control.getAllCykResultList();
+                                for (CykResults cyk : tempcyk) {
+                                    for (String s : cyk.getCykResultsList()) {
+                                        System.out
+                                                .println("cyk (step): " + cyk.getStep() + " (result): "
+                                                        + cyk.getCykResultsInFullForm());
+                                    }
+                                }
+
+                                result.clear(); // $ resets result array
+                            }
+                        }
+                        System.out.print("\n");
+                    }
+                }
+            }
+        }
+    }
 
     /*
      * =======================================
