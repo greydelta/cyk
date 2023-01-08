@@ -6,6 +6,10 @@ public class ConsoleUI {
 
     private Scanner scan;
     private Controller control;
+    public static final String RESET = "\u001B[0m";
+    public static final String YELLOW = "\u001B[33m";
+    public static final String RED = "\u001B[31m";
+    public static final String GREEN = "\u001B[32m	";
 
     public ConsoleUI() {
         scan = null;
@@ -296,7 +300,7 @@ public class ConsoleUI {
             ++step;
             int substep = 0;
             for (String cnf : selectedCnfInput.getCnfInputInList()) {
-                System.out.println("step " + step + " substep " + ++substep);
+                System.out.println(YELLOW + "step " + step + " substep " + ++substep + RESET);
                 for (Grammar grammar : grammarList) {
                     for (String gra : grammar.getVariable()) {
                         // ^ Step 1
@@ -318,8 +322,8 @@ public class ConsoleUI {
                                 for (CykResults cyk : tempcyk) {
                                     for (String s : cyk.getCykResultsList()) {
                                         System.out
-                                                .println("cyk (step): " + cyk.getStep() + " (result): "
-                                                        + cyk.getCykResultsInFullForm());
+                                                .println(RED + "cyk (step): " + cyk.getStep() + " (result): "
+                                                        + cyk.getCykResultsInFullForm() + RESET);
                                     }
                                 }
 
