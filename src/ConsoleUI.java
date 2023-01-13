@@ -8,8 +8,10 @@ public class ConsoleUI {
     private Controller control;
     public static final String RESET = "\u001B[0m";
     public static final String YELLOW = "\u001B[33m";
-    public static final String RED = "\u001B[31m";
-    public static final String GREEN = "\u001B[32m	";
+    public static final String RED = "\u001B[41m";
+    public static final String GREEN = "\u001B[32m";
+    public static final String BLUE = "\u001B[34m";
+    public static final String PURPLE = "\u001B[35m";
 
     public ConsoleUI() {
         scan = null;
@@ -269,10 +271,10 @@ public class ConsoleUI {
             System.out.println("Received num of inputs: " + cnfInput.getCnfInputInList().size());
         }
 
-        initiateIteration();
+        step1();
     }
 
-    public void initiateIteration() {
+    public void step1() {
         System.out.println("\ninitiateIteration()");
         List<Grammar> grammarList = control.getAllGrammars();
         List<CnfInput> cnfInputList = control.getAllCnfInputs();
@@ -302,31 +304,23 @@ public class ConsoleUI {
                                             + gra
                                             + " Action > ");
                             if (cnf.equals(gra)) {
-                                System.out.print(
-                                        "Add " + grammar.getStartVariable() + " to Substep " + substep + " array");
+                                System.out.println(
+                                        "Add " + grammar.getStartVariable() + " to CykResults Step: " + step);
                                 result.add(grammar.getStartVariable());
-                            }
-                        } else if (step == 2) {
-                            if (substep == 1) {
-                                control.addCykResult(step - 1, result); // $ add results from step 1
+                            } else
+                                System.out.print("\n");
 
-                                List<CykResults> tempcyk = control.getAllCykResultList();
-                                for (CykResults cyk : tempcyk) {
-                                    for (String s : cyk.getCykResultsList()) {
-                                        System.out
-                                                .println(RED + "cyk (step): " + cyk.getStep() + " (result): "
-                                                        + cyk.getCykResultsInFullForm() + RESET);
-                                    }
-                                }
-
-                                result.clear(); // $ resets result array
-                            }
                         }
-                        System.out.print("\n");
                     }
                 }
             }
         }
+
+        System.out.println(GREEN + "Add CykResults (Step 1) to DataLists" + RESET);
+        control.addCykResult(1, new ArrayList<>(result)); // $ add results from step 1
+        result.clear(); // $ resets result array
+
+    }
     }
 
     /*
