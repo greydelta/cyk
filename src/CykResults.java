@@ -29,7 +29,7 @@ public class CykResults {
             count++;
             msg += cyk.toString();
             if (count != this.getCykResultsList().size())
-                msg += " | ";
+                msg += "|";
         }
         return msg;
     }

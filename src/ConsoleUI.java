@@ -210,7 +210,7 @@ public class ConsoleUI {
                 if (!checkIfCnfInputExists(cnfInput)) {
                     // boolean flag = checkIfCnfInputIsValid(cnfInput);
 
-                    control.addCnfInput(cnfInput, splitCnfInput(cnfInput));
+                    control.addCnfInput(cnfInput, splitStringRegex(cnfInput, ""));
                 } else {
                     System.out.println("\nCNF Input entered already exists!");
                 }
@@ -255,14 +255,6 @@ public class ConsoleUI {
         return flag;
     }
 
-    public List<String> splitCnfInput(String cnfInput) {
-        List<String> listString = new ArrayList<>();
-        String[] split = cnfInput.split("");
-        for (int i = 0; i < split.length; i++) {
-            listString.add(split[i]);
-        }
-        return listString;
-    }
 
     public void inputManually() {
         // handle @ frontend
@@ -342,6 +334,17 @@ public class ConsoleUI {
      * ====== SECTION : Utility Methods ======
      * =======================================
      */
+
+    public List<String> splitStringRegex(String stringToSplit, String regexParams) {
+        List<String> listString = new ArrayList<>();
+        String[] split = stringToSplit.split(regexParams);
+        for (int i = 0; i < split.length; i++) {
+            if (!split[i].equals(regexParams))
+                listString.add(split[i]);
+        }
+        return listString;
+    }
+
     public int intInputValidation(int lower, int upper) throws IllegalArgumentException {
         setScanner(new Scanner(System.in));
         int userInput;
