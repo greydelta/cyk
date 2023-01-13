@@ -320,6 +320,74 @@ public class ConsoleUI {
         control.addCykResult(1, new ArrayList<>(result)); // $ add results from step 1
         result.clear(); // $ resets result array
 
+        step2();
+    }
+
+    public void step2() {
+        String resultFromStep1 = new String("");
+        resultFromStep1 = control.getCykResultByStep(1);
+        System.out.println("resultFromStep1: " + resultFromStep1);
+
+        List<String> splitResult = splitStringRegex(resultFromStep1, "|");
+        int count = 1;
+        String variableToCompare = new String("");
+        List<String> listOfVariablesToCompare = new ArrayList<>();
+
+        for (String s : splitResult) {
+            // @ debug
+            // System.out.println("count: " + count);
+            if (count == 1) {
+                variableToCompare = s; // ^ initial variable
+                // @ debug
+                // System.out.println("initial var: " + variableToCompare);
+            } else if (count != 1) {
+                // ^ if length more than 2 than split
+                if (variableToCompare.length() >= 2) {
+                    variableToCompare = variableToCompare.substring(1);
+                    // @ debug
+                    // System.out.println("after substring: " + variableToCompare);
+                }
+
+                // ^ combine with previous variable
+                if (variableToCompare.length() < 2) {
+                    variableToCompare = variableToCompare.concat(s);
+                    // @ debug
+                    // System.out.println("after concat: " + variableToCompare);
+                }
+
+                // ^ add to list
+                if (variableToCompare.length() > 1)
+                    listOfVariablesToCompare.add(variableToCompare);
+            }
+            count++;
+        }
+
+        List<Grammar> grammarList = control.getAllGrammars();
+        List<String> result = new ArrayList<>();
+
+        for (Grammar grammar : grammarList) {
+            for (String gra : grammar.getVariable()) {
+                for (String variable : listOfVariablesToCompare) {
+                    System.out.print(
+                            "Compare: " + variable + " against grammar: "
+                                    + grammar.getStartVariable()
+                                    + " var: "
+                                    + gra + " Action > ");
+
+                    if (variable.equals(gra)) {
+                        System.out.println(
+                                "Add " + grammar.getStartVariable() + " to CykResults Step: " + 2);
+                        result.add(grammar.getStartVariable());
+                    } else
+                        System.out.print("\n");
+                }
+            }
+        }
+
+        System.out.println(GREEN + "Add CykResults (Step 2) to DataLists" + RESET);
+        control.addCykResult(2, new ArrayList<>(result)); // $ add results from step 1
+        result.clear(); // $ resets result array
+
     }
     }
 
