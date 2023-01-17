@@ -404,6 +404,55 @@ public class ConsoleUI {
         control.addCykResult(2, new ArrayList<>(result)); // $ add results from step 1
         result.clear(); // $ resets result array
 
+        step3_n();
+    }
+    public void step3_n() {
+        System.out.println(YELLOW_BACKGROUND + "========== Step 3_n ==========" + RESET);
+        int step = 3;
+        List<CnfInput> cnfInputList = control.getAllCnfInputs();
+        int cnfInputSize = 0;
+        for (CnfInput cnfInput : cnfInputList) { // ! TODO: refactor - separate CNF List
+            cnfInputSize = cnfInput.getCnfInputInList().size();
+        }
+        System.out.println("input size: " + cnfInputSize);
+
+        String resultFromStep1 = new String("");
+        resultFromStep1 = control.getCykResultByStep(1);
+        List<String> splitResult1 = splitStringRegex(resultFromStep1, "|");
+        System.out.println(BLUE + "resultFromStep1: " + resultFromStep1 + RESET);
+
+        String resultFromStep2 = new String("");
+        resultFromStep2 = control.getCykResultByStep(2);
+        List<String> splitResult2 = splitStringRegex(resultFromStep2, "|");
+        System.out.println(BLUE + "resultFromStep2: " + resultFromStep2 + RESET);
+
+        String cnfResultsArray[][] = new String[cnfInputSize][cnfInputSize];
+        // ^ initialize step 1
+        int count = 0;
+        for (String s : splitResult1) {
+            cnfResultsArray[0][count] = s;
+            count++;
+        }
+
+        // ^ initialize step 2
+        count = 0;
+        for (String s : splitResult2) {
+            cnfResultsArray[1][count] = s;
+            count++;
+        }
+
+        int inner = 3;
+        for (int i = 0; i < 2; i++) {
+            System.out.print("ROW " + (i + 1) + ": ");
+            inner--;
+            for (int j = 0; j <= inner; j++) {
+                System.out.print("(" + i + "," + j + ") " + cnfResultsArray[i][j]);
+                if (j != inner)
+                    System.out.print(" | ");
+            }
+            System.out.println();
+        }
+
     }
     }
 
