@@ -8,10 +8,19 @@ public class ConsoleUI {
     private Controller control;
     public static final String RESET = "\u001B[0m";
     public static final String YELLOW = "\u001B[33m";
-    public static final String RED = "\u001B[41m";
+    public static final String RED = "\u001B[31m";
     public static final String GREEN = "\u001B[32m";
     public static final String BLUE = "\u001B[34m";
     public static final String PURPLE = "\u001B[35m";
+    public static final String CYAN = "\u001B[36m";
+    public static final String WHITE = "\u001B[37m";
+    public static final String WHITE_BACKGROUND = "\u001B[47m";
+    public static final String YELLOW_BACKGROUND = "\u001B[43m";
+    public static final String GREEN_BACKGROUND = "\u001B[42m";
+    public static final String BLUE_BACKGROUND = "\u001B[44m";
+    public static final String CYAN_BACKGROUND = "\u001B[46m";
+    public static final String RED_BACKGROUND = "\u001B[41m";
+    public static final String PURPLE_BACKGROUND = "\u001B[45m";
 
     public ConsoleUI() {
         scan = null;
@@ -275,6 +284,7 @@ public class ConsoleUI {
     }
 
     public void step1() {
+        System.out.println(YELLOW_BACKGROUND + "========== Step 1 ==========" + RESET);
         System.out.println("\ninitiateIteration()");
         List<Grammar> grammarList = control.getAllGrammars();
         List<CnfInput> cnfInputList = control.getAllCnfInputs();
@@ -324,9 +334,10 @@ public class ConsoleUI {
     }
 
     public void step2() {
+        System.out.println(YELLOW_BACKGROUND + "========== Step 2 ==========" + RESET);
         String resultFromStep1 = new String("");
         resultFromStep1 = control.getCykResultByStep(1);
-        System.out.println("resultFromStep1: " + resultFromStep1);
+        System.out.println(BLUE + "resultFromStep1: " + resultFromStep1 + RESET);
 
         List<String> splitResult = splitStringRegex(resultFromStep1, "|");
         int count = 1;
