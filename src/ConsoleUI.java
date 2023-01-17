@@ -364,10 +364,11 @@ public class ConsoleUI {
 
         List<Grammar> grammarList = control.getAllGrammars();
         List<String> result = new ArrayList<>();
-
-        for (Grammar grammar : grammarList) {
-            for (String gra : grammar.getVariable()) {
-                for (String variable : listOfVariablesToCompare) {
+        boolean flag = false;
+        for (String variable : listOfVariablesToCompare) {
+            flag = false;
+            for (Grammar grammar : grammarList) {
+                for (String gra : grammar.getVariable()) {
                     System.out.print(
                             "Compare: " + variable + " against grammar: "
                                     + grammar.getStartVariable()
@@ -378,10 +379,14 @@ public class ConsoleUI {
                         System.out.println(
                                 "Add " + grammar.getStartVariable() + " to CykResults Step: " + 2);
                         result.add(grammar.getStartVariable());
-                    } else
+                        flag = true;
+                    } else {
                         System.out.print("\n");
+                    }
                 }
             }
+            if (flag == false) // ^ insert "#" for comparisons that cannot generate
+                result.add("#");
         }
 
         System.out.println(GREEN + "Add CykResults (Step 2) to DataLists" + RESET);
