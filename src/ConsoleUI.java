@@ -412,6 +412,16 @@ public class ConsoleUI {
         step3_n();
     }
 
+    public int[] generateInitialCoordinates(int z1, int z2) {
+        int[] tempArray = {0, z2, (z1 - 1), (z2 + 1)};
+        return tempArray;
+    }
+
+    public void displayCoordinates(int x1, int x2, int y1, int y2, boolean showInitial) {
+        if(showInitial) System.out.print("(Initial) " + RED + " x1: " + BLUE + x1 + RED + " x2: " + BLUE + x2 + RED + " y1: " + BLUE + y1 + RED + " y2: " + BLUE + y2 + RESET);
+        else System.out.print(RED + " x1: " + YELLOW + x1 + RED + " x2: " + YELLOW + x2 + RED + " y1: " + YELLOW + y1 + RED + " y2: " + YELLOW + y2 + RESET);
+    }
+
     public void step3_n() {
         System.out.println(YELLOW_BACKGROUND + "========== Step 3_n ==========" + RESET);
         int step = 3;
@@ -459,6 +469,32 @@ public class ConsoleUI {
             System.out.println();
         }
 
+
+    public String getVariableFromTempResults(String tempResults){
+        List<String> splitResult  = splitStringRegex(tempResults, "|");
+        String msg = "";
+        int count = -1;
+        for(String s : splitResult) { 
+            count++;
+            if(!s.equals("#")) msg += s;
+            if(count == (splitResult.size()-1) && msg.length() == 0) msg += '#';
+            // System.out.println(">>> !s.equals(#): " + !s.equals("#"));
+            // System.out.println(">>> " + count + " == " + (splitResult.size()-1) + " :: " + (count == (splitResult.size()-1)));
+        }
+        return msg;
+    }
+
+    public String getVariableFromResultsArray(String[][] cnfResultsArray, int cnfInputSize, int x1, int x2) {
+        String variable = "";
+        for (int i = 0; i < cnfInputSize; i++) {
+            for (int j = 0; j < cnfInputSize; j++) {
+                if (x1 == i && x2 == j) {
+                    variable = cnfResultsArray[i][j];
+                    System.out.println("Coordinate: (" + x1 + "," + x2 + "): " + variable);
+                }
+            }
+        }
+        return variable;
     }
     }
 
