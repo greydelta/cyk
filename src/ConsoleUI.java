@@ -304,11 +304,11 @@ public class ConsoleUI {
             ++step;
             int substep = 0;
             for (String cnf : selectedCnfInput.getCnfInputInList()) {
-                System.out.println(YELLOW + "step " + step + " substep " + ++substep + RESET);
+                if(step == 1) System.out.println(YELLOW + "step " + step + " substep " + ++substep + RESET);
                 for (Grammar grammar : grammarList) {
                     for (String gra : grammar.getVariable()) {
                         // ^ Step 1
-                        if (step == 1) {
+                        if (step == 1) { // ^ TODO : consider double variable scenario
                             System.out.print(
                                     "Compare: " + cnf + " against grammar: " + grammar.getStartVariable() + " var: "
                                             + gra
@@ -327,8 +327,8 @@ public class ConsoleUI {
         }
 
         System.out.println(GREEN + "Add CykResults (Step 1) to DataLists" + RESET);
-        control.addCykResult(1, new ArrayList<>(result)); // $ add results from step 1
-        result.clear(); // $ resets result array
+        control.addCykResult(1, new ArrayList<>(result));
+        result.clear();
 
         step2();
     }
@@ -396,16 +396,22 @@ public class ConsoleUI {
                     }
                 }
             }
-            if (flag == false) // ^ insert "#" for comparisons that cannot generate
+            System.out.print(BLUE + "End action > ");
+            if (flag == false) { // ^ insert "#" for comparisons that cannot generate
+                System.out.print("adding #");
                 result.add("#");
+            } else 
+            System.out.print("no action");
+            System.out.println(RESET);
         }
 
         System.out.println(GREEN + "Add CykResults (Step 2) to DataLists" + RESET);
-        control.addCykResult(2, new ArrayList<>(result)); // $ add results from step 1
-        result.clear(); // $ resets result array
+        control.addCykResult(2, new ArrayList<>(result));
+        result.clear(); 
 
         step3_n();
     }
+
     public void step3_n() {
         System.out.println(YELLOW_BACKGROUND + "========== Step 3_n ==========" + RESET);
         int step = 3;
