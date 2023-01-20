@@ -365,70 +365,127 @@ public class ConsoleUI {
         resultFromStep1 = control.getCykResultByStep(1);
         System.out.println(BLUE + "resultFromStep1: " + resultFromStep1 + RESET);
 
-        List<String> splitResult = splitStringRegex(resultFromStep1, "|");
-        int count = 1;
-        String variableToCompare = new String("");
-        List<String> listOfVariablesToCompare = new ArrayList<>();
-
-        for (String s : splitResult) {
-            // @ debug
-            // System.out.println("count: " + count);
-            if (count == 1) {
-                variableToCompare = s; // ^ initial variable
-                // @ debug
-                // System.out.println("initial var: " + variableToCompare);
-            } else if (count != 1) {
-                // ^ if length more than 2 than split
-                if (variableToCompare.length() >= 2) {
-                    variableToCompare = variableToCompare.substring(1);
-                    // @ debug
-                    // System.out.println("after substring: " + variableToCompare);
-                }
-
-                // ^ combine with previous variable
-                if (variableToCompare.length() < 2) {
-                    variableToCompare = variableToCompare.concat(s);
-                    // @ debug
-                    // System.out.println("after concat: " + variableToCompare);
-                }
-
-                // ^ add to list
-                if (variableToCompare.length() > 1)
-                    listOfVariablesToCompare.add(variableToCompare);
-            }
-            count++;
+        List<CnfInput> cnfInputList = control.getAllCnfInputs();
+        int cnfInputSize = 0;
+        for (CnfInput cnfInput : cnfInputList) { // ! TODO: refactor - separate CNF List
+            cnfInputSize = cnfInput.getCnfInputInList().size();
         }
+        System.out.println("input size: " + cnfInputSize);
 
+        // List<String> splitResult = splitStringRegex(resultFromStep1, "|", true);
+        // int count = 1;
+        // String variableToCompare = new String("");
+        List<String> listOfVariablesToCompare = new ArrayList<>();
+        List<Integer> listOfVariableIndexs = new ArrayList<>();
+
+        List<CykResults> resultFromStep11 = control.getAllCykResultList();
+        for (CykResults res : resultFromStep11) {
+            String previousVar = "", currentVar = "";
+            int counter = 0;
+            for (String s : res.getCykResultsList()) {
+                System.out.println(WHITE_BACKGROUND + "getCykResultsList iter " + counter + RESET); // 3
+                if (counter == 0) {
+                    previousVar = s;
+                    currentVar = s;
+                } else {
+                    previousVar = currentVar;
+                    currentVar = s;
+                }
+                if (counter != 0) {
+                    for (int i = 0; i < previousVar.length(); i++) {
+                        for (int j = 0; j < currentVar.length(); j++) {
+                            String variable = "";
+                            if (currentVar.length() > 1 && !(previousVar.length() > 1)) {
+                                System.out.println("compare twice: " + previousVar + " and " + getLetterAt(currentVar, j) + " i:" + i + " j: " + j);
+                                variable = previousVar + getLetterAt(currentVar, j);
+                            } else if (previousVar.length() > 1 && !(currentVar.length() > 1)) {
+                                System.out.println("compare twice: " + getLetterAt(previousVar, i) + " and " + currentVar + " i:" + i + " j: " + j);
+                                variable = getLetterAt(previousVar, i) + currentVar;
+                            } 
+                            else if (currentVar.length() > 1 && previousVar.length() > 1) {
+                                System.out.println("compare twice: " + getLetterAt(previousVar, i) + " and " + getLetterAt(currentVar, j) + " i:" + i + " j: " + j);
+                                variable = getLetterAt(previousVar, i) + getLetterAt(currentVar, j);
+                            }
+                            else {
+                                System.out.println("compare: " + previousVar + " and " + currentVar + " i:" + i + " j: " + j);
+                                variable = previousVar + currentVar;
+                            }
+                            listOfVariablesToCompare.add(variable);
+                            listOfVariableIndexs.add(counter);
+                        }
+                    }
+                }
+                counter++;
+            }
+        }
+        listOfVariablesToCompare.add("##");
+        listOfVariableIndexs.add(0); // to trigger last end action
+
+        System.out.println();
         List<Grammar> grammarList = control.getAllGrammars();
         List<String> result = new ArrayList<>();
-        boolean flag = false;
+        List<String> tempResult = new ArrayList<>();
+        boolean flag = false; 
+        int counter = -1, currentRun = 0, previousRun = 0;
+        String variableToAdd = "";
         for (String variable : listOfVariablesToCompare) {
             flag = false;
+            counter++;
+            int index = getVarIndex(counter, listOfVariableIndexs);
+            System.out.println("run(" + counter + ") | index(" + index + ")");
             for (Grammar grammar : grammarList) {
                 for (String gra : grammar.getVariable()) {
-                    System.out.print(
-                            "Compare: " + variable + " against grammar: "
-                                    + grammar.getStartVariable()
-                                    + " var: "
-                                    + gra + " Action > ");
-
-                    if (variable.equals(gra)) {
-                        System.out.println(
-                                "Add " + grammar.getStartVariable() + " to CykResults Step: " + 2);
-                        result.add(grammar.getStartVariable());
-                        flag = true;
-                    } else {
-                        System.out.print("\n");
+                    if (index != 0) {
+                        System.out.print("Compare: " + variable + " against grammar: " + grammar.getStartVariable() + " var: " + gra);
+                        if (variable.equals(gra)) {
+                            // System.out.println("Add " + grammar.getStartVariable() + " to CykResults Step: " + 2);
+                            variableToAdd = grammar.getStartVariable();
+                            // result.add(grammar.getStartVariable());
+                            flag = true;
+                        } else {
+                            System.out.print("\n");
+                        }
                     }
                 }
             }
-            System.out.print(BLUE + "End action > ");
-            if (flag == false) { // ^ insert "#" for comparisons that cannot generate
-                System.out.print("adding #");
-                result.add("#");
-            } else 
-            System.out.print("no action");
-            System.out.println(RESET);
+            
+            if (counter == 0) {
+                previousRun = index;
+                currentRun = index;
+            } else {
+                previousRun = currentRun;
+                currentRun = index;
+            }
+
+            if (currentRun != previousRun) {
+                // ^ check tempResult (for previous runs)
+                System.out.print(BLUE + "End action (before index(" + (index) + ")) > ");
+                if (tempResult.size() != 0) {
+                    System.out.print("checkTempResult() > ");
+                    String finalVarToAdd = ""; boolean checkFlag = false;
+                    for (String s : tempResult) {
+                        if (!s.equals("#")) {
+                            checkFlag = true;
+                            finalVarToAdd += s;
+                        }
+                    }
+                    if (!checkFlag) finalVarToAdd = "#";
+                    System.out.println("Add " + finalVarToAdd + " to result");
+                    result.add(finalVarToAdd);
+                } else {   
+                    System.out.println("impossible");
+                }
+                System.out.println(RESET);
+                tempResult.clear();
+            }
+
+            if (flag == false) { // ! cannot generate
+                System.out.println(RED + "add # to tempResult" + RESET);
+                tempResult.add("#");
+            } else { // $ can generate
+                System.out.println(RED + "add " + variableToAdd + " to tempResult" + RESET);
+                tempResult.add(variableToAdd);
+            }
         }
 
         System.out.println(GREEN + "Add CykResults (Step 2) to DataLists" + RESET);
