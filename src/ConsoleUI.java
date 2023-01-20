@@ -220,8 +220,7 @@ public class ConsoleUI {
                 cnfInput = stringInputValidation();
                 if (!checkIfCnfInputExists(cnfInput)) {
                     // boolean flag = checkIfCnfInputIsValid(cnfInput);
-
-                    control.addCnfInput(cnfInput, splitStringRegex(cnfInput, ""));
+                    control.addCnfInput(cnfInput, splitStringRegex(cnfInput, "", false));
                 } else {
                     System.out.println("\nCNF Input entered already exists!");
                 }
@@ -449,12 +448,12 @@ public class ConsoleUI {
 
         String resultFromStep1 = new String("");
         resultFromStep1 = control.getCykResultByStep(1);
-        List<String> splitResult1 = splitStringRegex(resultFromStep1, "|");
+        List<String> splitResult1 = splitStringRegex(resultFromStep1, "|", true);
         System.out.println(BLUE + "resultFromStep1: " + resultFromStep1 + RESET);
 
         String resultFromStep2 = new String("");
         resultFromStep2 = control.getCykResultByStep(2);
-        List<String> splitResult2 = splitStringRegex(resultFromStep2, "|");
+        List<String> splitResult2 = splitStringRegex(resultFromStep2, "|", true);
         System.out.println(BLUE + "resultFromStep2: " + resultFromStep2 + RESET);
 
         String cnfResultsArray[][] = new String[cnfInputSize][cnfInputSize];
@@ -617,7 +616,7 @@ public class ConsoleUI {
     }
 
     public String getVariableFromTempResults(String tempResults){
-        List<String> splitResult  = splitStringRegex(tempResults, "|");
+        List<String> splitResult  = splitStringRegex(tempResults, "|", false);
         String msg = "";
         int count = -1;
         for(String s : splitResult) { 
@@ -673,12 +672,15 @@ public class ConsoleUI {
      * =======================================
      */
 
-    public List<String> splitStringRegex(String stringToSplit, String regexParams) {
+    public List<String> splitStringRegex(String stringToSplit, String regexParams, boolean includeSeparator) {
         List<String> listString = new ArrayList<>();
         String[] split = stringToSplit.split(regexParams);
         for (int i = 0; i < split.length; i++) {
-            if (!split[i].equals(regexParams))
+            if (includeSeparator) 
                 listString.add(split[i]);
+            else 
+                if (!split[i].equals(regexParams))
+                    listString.add(split[i]);
         }
         return listString;
     }
