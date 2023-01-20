@@ -469,6 +469,136 @@ public class ConsoleUI {
             System.out.println();
         }
 
+        // ^ STEP 3 START
+        System.out.println(BLUE + "Step 3 actual START" + RESET);
+        List<Grammar> grammarList = control.getAllGrammars();
+        List<String> result = new ArrayList<>();
+        List<String> tempResult = new ArrayList<>();
+        boolean flag = false;
+
+        int x1 = 0, x2 = 0, y1 = 0, y2 = 0;
+        for (int i = 0; i < cnfInputSize; i++) { 
+            List<String> tempResultCol = new ArrayList<>();
+            // System.out.print("Initial state > ");
+            // displayCoordinates(x1, x2, y1, y2, true);
+
+            if (i > 1) { // skip steps 1 & 2
+                System.out.print(WHITE_BACKGROUND + "ROW " + (i + 1) + " >> i: " + i + " " + RESET);
+                displayCoordinates(x1, x2, y1, y2, true);
+                System.out.println();
+                for (int j = 0; j < (cnfInputSize - i); j++) { 
+                    // $ ======================
+                    int[] tempArray = generateInitialCoordinates(i, j);
+                    String msgg = ""; int iter = 0;
+                    for(int coordinate : tempArray) {
+                        msgg += coordinate;
+                        msgg += " ";
+                        iter++;
+                        switch (iter) {
+                            case 1: x1 = coordinate; break;
+                            case 2: x2 = coordinate; break;
+                            case 3: y1 = coordinate; break;
+                            case 4: y2 = coordinate; break;
+                        }
+                    }
+                    // System.out.println(GREEN + " here: " + msgg + RESET);
+                    // $ ======================
+                    System.out.print(BLUE_BACKGROUND + "COL " + j + " >> j: " + j + " " + RESET);
+                    // displayCoordinates(x1, x2, y1, y2, false);
+                    System.out.println();
+
+                    for(int k = 0; k < i; k++) { // k should execute (row num) times
+                        if(k != 0) {
+                            x1++; // x1 increment 1
+                            // x2 remain
+                            y1--; // y1 decrement 1
+                            y2++; // y2 increment 1
+                        }
+                        System.out.println();
+                        System.out.print(RED_BACKGROUND + "ROCO " + k + " >> k: " + k + " " + RESET);
+                        displayCoordinates(x1, x2, y1, y2, false);
+                        System.out.println();
+                        
+                        String tempFirst = getVariableFromResultsArray(cnfResultsArray, cnfInputSize, x1, x2);
+                        // System.out.print("Compare (" + x1 + "," + x2 + ") " + tempFirst + " and ");
+                        String tempSecond = getVariableFromResultsArray(cnfResultsArray, cnfInputSize, y1, y2);
+                        // System.out.print("Compare (" + y1 + "," + y2 + ") " + tempSecond);
+                        String variable = "";
+                        variable += tempFirst;
+                        variable += tempSecond;
+                        
+                        flag = false;
+                        for (Grammar grammar : grammarList) {
+                            for (String gra : grammar.getVariable()) {
+                                System.out.print("Compare: " + variable + " against grammar: " + grammar.getStartVariable() + " var: " + gra + " Action > ");
+                                                
+                                if (variable.equals(gra)) {
+                                    System.out.println("Add " + grammar.getStartVariable() + " to CykResults Step: " + 3);
+                                    tempResult.add(grammar.getStartVariable());
+                                    cnfResultsArray[i][j] = grammar.getStartVariable();
+                                    flag = true;
+                                } else {
+                                    System.out.print("\n");
+                                }
+                            }
+                        }
+                        System.out.print(PURPLE + "End action > ");
+                        if (flag == false) { // ^ insert "#" for comparisons that cannot generate
+                            System.out.println("adding #");
+                            tempResult.add("#");
+                            
+                        } else {
+                            System.out.println("action taken");
+                            System.out.print("action for cnfResultsArray");
+                        }
+                    }
+                    x1++; // x1 increment 1
+                    // x2 remain
+                    y1--; // y1 decrement 1
+                    y2++; // y2 increment 1
+                    
+                    System.out.println("" + RESET);
+ 
+                    String msg = "";
+                    for(String s : tempResult) {
+                        msg += s;
+                        msg += "|";
+                        if(!s.equals("#")) result.add(s);
+                    }
+                    System.out.println(BLUE + "check COL " + j + ": " + msg + RESET);
+
+                    System.out.println(BLUE + "Add " + getVariableFromTempResults(msg) + " to tempResultCol" + RESET);
+                    tempResultCol.add(getVariableFromTempResults(msg));
+                    
+                    System.out.println(GREEN + "adding " + getVariableFromTempResults(msg) + " to cnfResultsArray["+i+"]["+j+"]" + RESET);
+                    cnfResultsArray[i][j] = getVariableFromTempResults(msg);
+
+                    tempResult.clear();
+                }
+            }
+            String msg = ""; int county = 0;
+            for(String s : tempResultCol) {
+                county++;
+                msg += s;
+                if(county != tempResultCol.size()) {
+                    msg += "|";
+                }
+                if(!s.equals("#")) result.add(s);
+            }
+
+            if(i > 1) {
+                System.out.println("check ROW " + (i + 1) + ": " + msg);
+                // for (String s : tempResultCol) {
+                //     System.out.println(GREEN_BACKGROUND + "Check results: " + s + RESET);
+                // }
+                System.out.println(GREEN + "Add CykResults (Step " + step +") to DataLists" + RESET);
+                control.addCykResult(step++, new ArrayList<>(tempResultCol));
+                tempResult.clear();
+                tempResultCol.clear();
+                result.clear();
+            } 
+        }
+    }
 
     public String getVariableFromTempResults(String tempResults){
         List<String> splitResult  = splitStringRegex(tempResults, "|");
