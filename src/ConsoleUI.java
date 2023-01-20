@@ -598,6 +598,7 @@ public class ConsoleUI {
                 result.clear();
             } 
         }
+        checkResults();
     }
 
     public String getVariableFromTempResults(String tempResults){
@@ -626,6 +627,29 @@ public class ConsoleUI {
         }
         return variable;
     }
+
+    public void checkResults() {
+        System.out.println(YELLOW_BACKGROUND + "========== CHECK Results ==========" + RESET);
+        List<CnfInput> cnfInputList = control.getAllCnfInputs();
+        int cnfInputSize = 0, step = 1;
+        String cnfInputFromUser = "";
+        for (CnfInput cnfInput : cnfInputList) { // ! TODO: refactor - separate CNF List
+            cnfInputSize = cnfInput.getCnfInputInList().size();
+            cnfInputFromUser = cnfInput.getCnfInputInString();
+        }
+        System.out.println("input size: " + cnfInputSize);
+
+        System.out.println("==================================================");
+        for(int count = 0; count < cnfInputSize; count++) {   
+            String resultFromStep = new String("");
+            resultFromStep = control.getCykResultByStep(step);
+            System.out.println(BLUE + "resultFromStep" + (step++) + ": " + resultFromStep + RESET);
+            if (count == (cnfInputSize - 1)) {
+                if (resultFromStep.equals("S")) System.out.println(GREEN + "Conclusion: " + cnfInputFromUser + " IS PART of the language" + RESET);
+                else System.out.println(RED + "Conclusion: " + cnfInputFromUser + " IS NOT PART of the language" + RESET);
+            }
+        }
+        System.out.println("==================================================");
     }
 
     /*
