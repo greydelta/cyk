@@ -347,6 +347,18 @@ public class ConsoleUI {
         step2();
     }
 
+    public String getLetterAt(String variable, int index) {
+        List<String> splitResult = splitStringRegex(variable, "|", false);
+        int count = 0; String letter = "";
+        for (String s : splitResult) {
+            if (index == count) {
+                letter = s;
+            }
+            count++;
+        }
+        return letter;
+    }
+
     public void step2() {
         System.out.println(YELLOW_BACKGROUND + "========== Step 2 ==========" + RESET);
         String resultFromStep1 = new String("");
@@ -424,6 +436,17 @@ public class ConsoleUI {
         result.clear(); 
 
         step3_n();
+    }
+
+    public int getVarIndex(int countReceived, List<Integer> listOfVariableIndexs) {  
+        int counter = 0; int varIndexToReturn = 0;
+        for (Integer i : listOfVariableIndexs) {
+            // System.out.println("getVarIndex() > countReceived: " + countReceived + " counter: " + counter);
+            if (counter == countReceived) 
+                varIndexToReturn = i;
+            counter++;
+        }
+        return varIndexToReturn;
     }
 
     public int[] generateInitialCoordinates(int z1, int z2) {
