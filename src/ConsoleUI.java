@@ -193,7 +193,7 @@ public class ConsoleUI {
                 // @ debug
                 if (variable.length() <= 1) {
                     System.out
-                            .println("variable: " + variable + "\t\tlength: " + variable.length() + " variable ASCII: "
+                            .println("variable: " + variable + "\t\tlength: " + variable.length() + " ASCII: "
                                     + (int) variable.charAt(0));
                     canGenerateVariableFlag = true;
                 } else
@@ -285,19 +285,22 @@ public class ConsoleUI {
 
     public void step1() {
         System.out.println(YELLOW_BACKGROUND + "========== Step 1 ==========" + RESET);
-        System.out.println("\ninitiateIteration()");
         List<Grammar> grammarList = control.getAllGrammars();
         List<CnfInput> cnfInputList = control.getAllCnfInputs();
+        int step = 0;
 
         // ^ set cnf input to generate / test against grammar - only 1 for now but can
         // ^ refactor to accomodate selection
+        int cnfInputSize = 0;
         CnfInput selectedCnfInput = new CnfInput();
         for (CnfInput cnfInput : cnfInputList) {
             selectedCnfInput.setCnfInputInList(cnfInput.getCnfInputInList());
             selectedCnfInput.setCnfInputInString(cnfInput.getCnfInputInString());
+            cnfInputSize = cnfInput.getCnfInputInList().size();
         }
+        System.out.println("input size: " + cnfInputSize);
 
-        int step = 0;
+        String cnfResultsArray[] = new String[cnfInputSize];
         List<String> result = new ArrayList<>();
 
         for (int i = 0; i < selectedCnfInput.getCnfInputInList().size(); i++) {
@@ -314,19 +317,31 @@ public class ConsoleUI {
                                             + gra
                                             + " Action > ");
                             if (cnf.equals(gra)) {
-                                System.out.println(
-                                        "Add " + grammar.getStartVariable() + " to CykResults Step: " + step);
-                                result.add(grammar.getStartVariable());
-                            } else
+                                if (cnfResultsArray[substep - 1] != null) {
+                                    String tempVariable = cnfResultsArray[substep - 1];
+                                    tempVariable += grammar.getStartVariable();
+                                    cnfResultsArray[substep - 1] = tempVariable;
+                                    System.out.println("add " + tempVariable + " to array[" + (substep - 1) + "]");
+                                }
+                                else {
+                                    System.out.println("add " + grammar.getStartVariable() + " to array[" + (substep - 1) + "]");
+                                    cnfResultsArray[substep - 1] = grammar.getStartVariable();
+                                }
+                            } else {
                                 System.out.print("\n");
-
+                            }
                         }
                     }
                 }
             }
         }
 
-        System.out.println(GREEN + "Add CykResults (Step 1) to DataLists" + RESET);
+        for (int count = 0; count < cnfResultsArray.length; count++) {
+            System.out.println(GREEN + "adding " + cnfResultsArray[count] + " to cnfResultsArray");
+            result.add(cnfResultsArray[count]); 
+        }
+
+        System.out.println("Add CykResults (Step 1) to DataLists" + RESET);
         control.addCykResult(1, new ArrayList<>(result));
         result.clear();
 
