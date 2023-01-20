@@ -378,8 +378,8 @@ public class ConsoleUI {
         List<String> listOfVariablesToCompare = new ArrayList<>();
         List<Integer> listOfVariableIndexs = new ArrayList<>();
 
-        List<CykResults> resultFromStep11 = control.getAllCykResultList();
-        for (CykResults res : resultFromStep11) {
+        List<CykResults> allResult = control.getAllCykResultList();
+        for (CykResults res : allResult) {
             String previousVar = "", currentVar = "";
             int counter = 0;
             for (String s : res.getCykResultsList()) {
@@ -540,15 +540,26 @@ public class ConsoleUI {
         // ^ initialize step 1
         int count = 0;
         for (String s : splitResult1) {
-            cnfResultsArray[0][count] = s;
-            count++;
+            if (!s.equals("|")) {
+                if(cnfResultsArray[0][count] == null) 
+                    cnfResultsArray[0][count] = s;
+                else
+                    cnfResultsArray[0][count] += s;
+            }
+            else
+                count++;
         }
 
         // ^ initialize step 2
         count = 0;
         for (String s : splitResult2) {
-            cnfResultsArray[1][count] = s;
-            count++;
+            if (!s.equals("|"))
+                if(cnfResultsArray[1][count] == null) 
+                    cnfResultsArray[1][count] = s;
+                else
+                    cnfResultsArray[1][count] += s;
+            else
+                count++;
         }
 
         int inner = 3;
@@ -624,15 +635,15 @@ public class ConsoleUI {
                         flag = false;
                         for (Grammar grammar : grammarList) {
                             for (String gra : grammar.getVariable()) {
-                                System.out.print("Compare: " + variable + " against grammar: " + grammar.getStartVariable() + " var: " + gra + " Action > ");
+                                // System.out.print("Compare: " + variable + " against grammar: " + grammar.getStartVariable() + " var: " + gra + " Action > ");
                                                 
                                 if (variable.equals(gra)) {
-                                    System.out.println("Add " + grammar.getStartVariable() + " to CykResults Step: " + 3);
+                                    // System.out.println("Add " + grammar.getStartVariable() + " to CykResults Step: " + 3);
                                     tempResult.add(grammar.getStartVariable());
                                     cnfResultsArray[i][j] = grammar.getStartVariable();
                                     flag = true;
                                 } else {
-                                    System.out.print("\n");
+                                    // System.out.print("\n");
                                 }
                             }
                         }
