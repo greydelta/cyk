@@ -273,13 +273,23 @@ public class ConsoleUI {
     public void generateCYK() {
         System.err.println("\n<<Generate CYK>>");
         List<CnfInput> cnfInputList = control.getAllCnfInputs();
+        int inputSize = 0;
 
         for (CnfInput cnfInput : cnfInputList) { // ! TODO: refactor - separate CNF List
             System.out.println("## Generating for CNF Input: " + cnfInput.getCnfInputInString());
-            System.out.println("Received num of inputs: " + cnfInput.getCnfInputInList().size());
+            inputSize = cnfInput.getCnfInputInList().size();
+            System.out.println("Received num of inputs: " + inputSize);
         }
 
-        step1();
+        switch (inputSize) {
+            case 1: 
+                step1(); break;
+            case 2: 
+                step1(); step2(); break;
+            case 3: 
+                step1(); step2(); step3_n(); break;
+        }
+        checkResults();
     }
 
     public void step1() {
@@ -343,8 +353,6 @@ public class ConsoleUI {
         System.out.println("Add CykResults (Step 1) to DataLists" + RESET);
         control.addCykResult(1, new ArrayList<>(result));
         result.clear();
-
-        step2();
     }
 
     public String getLetterAt(String variable, int index) {
@@ -491,8 +499,6 @@ public class ConsoleUI {
         System.out.println(GREEN + "Add CykResults (Step 2) to DataLists" + RESET);
         control.addCykResult(2, new ArrayList<>(result));
         result.clear(); 
-
-        step3_n();
     }
 
     public int getVarIndex(int countReceived, List<Integer> listOfVariableIndexs) {  
@@ -722,7 +728,6 @@ public class ConsoleUI {
                 result.clear();
             } 
         }
-        checkResults();
     }
 
     public String getVariableFromTempResults(String tempResults){
