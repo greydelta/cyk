@@ -281,14 +281,18 @@ public class ConsoleUI {
             System.out.println("Received num of inputs: " + inputSize);
         }
 
-        switch (inputSize) {
-            case 1: 
-                step1(); break;
-            case 2: 
-                step1(); step2(); break;
-            case 3: 
-                step1(); step2(); step3_n(); break;
+        if (inputSize == 1) {
+            step1();   
         }
+        else if (inputSize == 2) {
+            step1(); 
+            step2(); 
+        } else {   
+            step1(); 
+            step2(); 
+            step3_n();
+        }
+        
         checkResults();
     }
 
