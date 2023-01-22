@@ -582,17 +582,16 @@ public class ConsoleUI {
         boolean flag = false;
 
         int x1 = 0, x2 = 0, y1 = 0, y2 = 0;
-        for (int i = 0; i < cnfInputSize; i++) { 
+        for (int i = 0; i < cnfInputSize; i++) { // # i = ROW 
             List<String> tempResultCol = new ArrayList<>();
-            // System.out.print("Initial state > ");
-            // displayCoordinates(x1, x2, y1, y2, true);
 
             if (i > 1) { // skip steps 1 & 2
                 System.out.print(WHITE_BACKGROUND + "ROW " + (i + 1) + " >> i: " + i + " " + RESET);
                 displayCoordinates(x1, x2, y1, y2, true);
                 System.out.println();
-                for (int j = 0; j < (cnfInputSize - i); j++) { 
-                    // $ ======================
+                for (int j = 0; j < (cnfInputSize - i); j++) { // # j = COL 
+                    // $ ===========================
+                    // $ UPDATE x and y coordinates 
                     int[] tempArray = generateInitialCoordinates(i, j);
                     String msgg = ""; int iter = 0;
                     for(int coordinate : tempArray) {
@@ -607,13 +606,14 @@ public class ConsoleUI {
                         }
                     }
                     // System.out.println(GREEN + " here: " + msgg + RESET);
-                    // $ ======================
+                    // $ ===========================
                     System.out.print(BLUE_BACKGROUND + "COL " + j + " >> j: " + j + " " + RESET);
                     // displayCoordinates(x1, x2, y1, y2, false);
                     System.out.println();
 
-                    for(int k = 0; k < i; k++) { // k should execute (row num) times
-                        if(k != 0) {
+                    // k should execute (row num) times
+                    for(int k = 0; k < i; k++) { // ! k = ROCO 
+                        if (k != 0) {
                             x1++; // x1 increment 1
                             // x2 remain
                             y1--; // y1 decrement 1
@@ -625,45 +625,64 @@ public class ConsoleUI {
                         System.out.println();
                         
                         String tempFirst = getVariableFromResultsArray(cnfResultsArray, cnfInputSize, x1, x2);
-                        // System.out.print("Compare (" + x1 + "," + x2 + ") " + tempFirst + " and ");
                         String tempSecond = getVariableFromResultsArray(cnfResultsArray, cnfInputSize, y1, y2);
-                        // System.out.print("Compare (" + y1 + "," + y2 + ") " + tempSecond);
                         String variable = "";
                         variable += tempFirst;
                         variable += tempSecond;
-                        
-                        flag = false;
-                        for (Grammar grammar : grammarList) {
-                            for (String gra : grammar.getVariable()) {
-                                // System.out.print("Compare: " + variable + " against grammar: " + grammar.getStartVariable() + " var: " + gra + " Action > ");
-                                                
-                                if (variable.equals(gra)) {
-                                    // System.out.println("Add " + grammar.getStartVariable() + " to CykResults Step: " + 3);
-                                    tempResult.add(grammar.getStartVariable());
-                                    cnfResultsArray[i][j] = grammar.getStartVariable();
-                                    flag = true;
-                                } else {
-                                    // System.out.print("\n");
+
+                        for (int l =0; l < tempFirst.length(); l++) {
+                            for (int m = 0; m < tempSecond.length(); m++) {
+                                if (tempSecond.length() > 1 && !(tempFirst.length() > 1)) {
+                                    System.out.println("compare twice: " + tempFirst + " and " + getLetterAt(tempSecond, m) + " l:" + l + " m: " + m);
+                                    variable = tempFirst + getLetterAt(tempSecond, m);
+                                } else if (tempFirst.length() > 1 && !(tempSecond.length() > 1)) {
+                                    System.out.println("compare twice: " + getLetterAt(tempFirst, l) + " and " + tempSecond + " l:" + l + " m: " + m);
+                                    variable = getLetterAt(tempFirst, l) + tempSecond;
+                                } 
+                                else if (tempSecond.length() > 1 && tempFirst.length() > 1) {
+                                    System.out.println("compare twice: " + getLetterAt(tempFirst, l) + " and " + getLetterAt(tempSecond, m) + " l:" + l + " m: " + m);
+                                    variable = getLetterAt(tempFirst, l) + getLetterAt(tempSecond, m);
                                 }
+                                else {
+                                    System.out.println("compare: " + tempFirst + " and " + tempSecond + " l:" + l + " j: " + j);
+                                    variable = tempFirst + tempSecond;
+                                }
+
+                                // ! ++++++++++++++
+                                flag = false;
+                        
+                                for (Grammar grammar : grammarList) {
+                                    for (String gra : grammar.getVariable()) {
+                                        // System.out.print("Compare: " + variable + " against grammar: " + grammar.getStartVariable() + " var: " + gra + " Action > ");
+                                                        
+                                        if (variable.equals(gra)) {
+                                            // System.out.println("Add " + grammar.getStartVariable() + " to CykResults Step: " + 3);
+                                            tempResult.add(grammar.getStartVariable());
+                                            flag = true;
+                                        } else {
+                                            // System.out.print("\n");
+                                        }
+                                    }
+                                }
+                                System.out.print(PURPLE + "End action > ");
+                                if (flag == false) { // ^ insert "#" for comparisons that cannot generate
+                                    System.out.println("adding #");
+                                    tempResult.add("#");
+                                    
+                                } else {
+                                    System.out.println("action taken");
+                                }
+                                System.out.println("" + RESET);
+                                // ! ++++++++++++++
                             }
                         }
-                        System.out.print(PURPLE + "End action > ");
-                        if (flag == false) { // ^ insert "#" for comparisons that cannot generate
-                            System.out.println("adding #");
-                            tempResult.add("#");
-                            
-                        } else {
-                            System.out.println("action taken");
-                            System.out.print("action for cnfResultsArray");
-                        }
+                       
                     }
                     x1++; // x1 increment 1
                     // x2 remain
                     y1--; // y1 decrement 1
                     y2++; // y2 increment 1
                     
-                    System.out.println("" + RESET);
- 
                     String msg = "";
                     for(String s : tempResult) {
                         msg += s;
