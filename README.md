@@ -2,7 +2,11 @@
 
 <!-- PROJECT SHIELDS -->
 
-[![Contributors][contributors-shield]][contributors-url] [![Forks][forks-shield]][forks-url] [![Stargazers][stars-shield]][stars-url] [![Issues][issues-shield]][issues-url] [![MIT License][license-shield]][license-url]
+<div align="center">
+
+[![Contributors][contributors-shield]][contributors-url] [![Forks][forks-shield]][forks-url] [![Stargazers][stars-shield]][stars-url] [![Issues][issues-shield]][issues-url] [![license][license-shield]][license-url]
+
+</div>
 
 <!-- PROJECT LOGO -->
 <br />
@@ -13,7 +17,7 @@
 
 <h3 align="center">chomsky</h3>
 
-  <p align="center">A CLI-based program to generate a CYK table for any given grammar in Chomsky Normal Form (CNF).    <br />
+  <p align="center">A CLI-based program to generate a CYK table for any given grammar in Chomsky Normal Form (CNF)    <br />
     <a href="https://github.com/greydelta/cyk"><strong>Explore the docs »</strong></a>
     <br />
     <br />
@@ -37,11 +41,19 @@ Scenarios where more than 1 variable are present to be compared can also be hand
 
 ### Program flowchart:
 
-[![Product Name Screen Shot][product-flowchart]](#)
+<div align="center">
+
+[![flowchart][media-flowchart]](#)
+
+</div>
 
 ### Program output:
 
-[![Product Name Screen Shot][product-output]](#)
+<div align="center">
+
+[![output][media-output]](#)
+
+</div>
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -93,7 +105,7 @@ If you have a suggestion that would make this better, please fork the repo and c
 
 ## License
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+Distributed under the GNU AGPLv3 License. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -129,6 +141,5 @@ Project Link: [https://github.com/greydelta/cyk](https://github.com/greydelta/cy
 [issues-url]: https://github.com/greydelta/cyk/issues
 [license-shield]: https://img.shields.io/github/license/greydelta/cyk.svg?style=for-the-badge
 [license-url]: https://github.com/greydelta/cyk/blob/master/LICENSE.txt
-[product-logo]: cyk-logo.png
-[product-flowchart]: cyk_flowchart.drawio.png
-[product-output]: sample_output.png
+[media-flowchart]: cyk-flowchart.png
+[media-output]: sample_output.png
