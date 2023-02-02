@@ -113,7 +113,17 @@ Distributed under the GNU AGPLv3 License. See `LICENSE.txt` for more information
 
 ## Contact
 
-[@greydelta1](https://twitter.com/greydelta1)
+<div align="center">
+  <a href="https://twitter.com/greydelta1" target="_blank">
+  <img src="https://img.shields.io/badge/twitter:  @greydelta1-%231DA1F2.svg?style=for-the-badge&logo=twitter&logoColor=white" alt=twitter style="margin-bottom: 5px;"/>
+  </a> <a href="https://discord.com/users/379539771837513729" target="_blank">
+  <img src="https://img.shields.io/badge/discord:  @double.decompose-%235865F2.svg?style=for-the-badge&logo=discord&logoColor=white" alt=discord style="margin-bottom: 5px;"/>
+  </a> <a href="mailto:dev.aw.qwe@gmail.com" target="_blank">
+  <img src="https://img.shields.io/badge/gmail:  dev.aw.qwe@gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt=mail style="margin-bottom: 5px;" />
+  </a>
+</div>
+
+<br />
 
 Project Link: [https://github.com/greydelta/cyk](https://github.com/greydelta/cyk)
 
